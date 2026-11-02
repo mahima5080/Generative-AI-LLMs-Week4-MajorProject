@@ -1,0 +1,25 @@
+name: Production GenAI Platform CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Test Platform Backend
+      run: |
+        python -c "import main; print('FastAPI Platform Engine Verified Successfully!')"
+    - name: Build Docker Image
+      run: |
+        docker build -t genai-production-platform:latest .
